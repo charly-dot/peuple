@@ -105,22 +105,6 @@ $total_liste4 = 0;
   </table>
 </div>
 
-
-      <!-- Formulaire de recherche -->
-      <form action="liste_province" method="POST" class="mt-6 flex flex-wrap gap-3 items-center ">
-        <input type="text" name="search" placeholder="Recherche"
-               class="flex-grow min-w-[180px] border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
-
-        <button type="submit" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition">
-          🔍 Recherche
-        </button>
-
-        <a href="chois.html" class="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition">
-          ➕ Ajouter
-        </a>
-        
-      </form>
-
     </div>
   </div>
 </body>
