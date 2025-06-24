@@ -1,15 +1,18 @@
 <?php 
 require('bdn.php');
-$delete = $_GET['nom'];
-$dlt2 = $_GET['dlt2'];
-$dlt3 = $_GET['dlt3'];
-$dlt4 = $_GET['dlt4'];
+$delete = $_GET['nom'] ?? null;
+$dlt2 = $_GET['dlt2'] ?? null;
+$dlt3 = $_GET['dlt3'] ?? null;
+$dlt4 = $_GET['dlt4'] ?? null;
+$suppressionHabitant = $_GET['suppressionHabitant'] ?? null;
+$suppressionadress = $_GET['suppressionadress'] ?? null;
     if(isset($delete)){
         $supprimer = $connexion->prepare("DELETE FROM province WHERE id = :id");
         $supprimer->execute([
             "id"=>$delete,
         ]);  
-        echo "<script>document.location='Acceuil.php'</script>";
+        
+        header("location: Acceuil.php?delete");
         return($supprimer);
     }
     if(isset($dlt2)){
@@ -17,7 +20,8 @@ $dlt4 = $_GET['dlt4'];
         $supprimer->execute([
             "id"=>$dlt2,
         ]);  
-        echo "<script>document.location='region.php'</script>";
+        
+        header("location: region.php?delete");
         return($supprimer);
     }
     if(isset($dlt3)){
@@ -25,18 +29,36 @@ $dlt4 = $_GET['dlt4'];
         $supprimer->execute([
             "id"=>$dlt3,
         ]);  
-        echo "<script>document.location='commune.php'</script>";
+        // echo "<script>document.location='commune.php'</script>";
+        header("location: commune.php?delete");
         return($supprimer);
-    }else{
-        echo "tsy mety";
     }
     if(isset($dlt4)){
         $supprimer = $connexion->prepare("DELETE FROM Fokotany WHERE id = :id");
         $supprimer->execute([
             "id"=>$dlt4,
         ]);  
-        echo "<script>document.location='Fokotany.php'</script>";
+        header("location: Fokotany.php?delete");
         return($supprimer);
+        
+        
     }
+    if(isset($suppressionadress)){
+       $supprimer = $connexion->prepare("DELETE FROM maison WHERE id = :id");
+       $supprimer->execute([
+           "id"=>$suppressionadress,
+       ]);  
+       header("location: Fokotany.php?delete");
+       return($supprimer);
+    }   
 
+     if(isset($suppressionHabitant)){
+        $supprimer = $connexion->prepare("DELETE FROM habitant WHERE id = :id");
+        $supprimer->execute([
+            "id"=>$suppressionHabitant,
+        ]);  
+        header("location: Fokotany.php?delete");
+        return($supprimer);
+     }
+    
 ?>

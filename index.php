@@ -1,73 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="tout.css">
-    <title>authontication</title>
-    <style>
-        .errer{
-            background-color:rgba(180, 82, 82, 0.7);
-            font-size: 1.5rem;
-            color:black;
-            font-family:arial;
-            width:95%;
-            border-radius: 5%;
-            text-align:center;
-            margin-left:20%;
-        }
-        label{
-            font-size: 2.5rem;
-            font-family:arial;
-            margin-left: 40%;
-        }
-        input{
-            height:7vh;
-            width: 120%;
-            margin-left: 20px;
-            border-radius: 5px;
-            padding:2%;
-        }
-        .fahatelo{
-            background-color: rgba(0, 0, 0, 0.2);
-            width:60%;
-            margin-left:18%;
-            margin-top:9%;
-            padding:3%;
-            padding-bottom: 5%;
-        }
-        a{color: blue;}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Authentification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #F3F4F6;
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <container>
-            <p>
-                <div class="row fahatelo">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-6">
-                        <?php if(isset($_GET['error'])) {?>
-                            <p class="errer"><?php echo"votre information est incomplet ";  ?></p>
-                        <?php }?>
-                        <?php if(isset($_GET['faux'])) {?>
-                            <p class="errer"><?php echo"votre information est incorrect ";  ?></p>
-                        <?php }?>
-                        <form action="confirmation.php" class="control-group" method="POST">
-                            <label for="compte">compte</label><br>
-                            <input type="text" class="compte" name="compte"><br>
-                            <label for="pss">password</label><br>
-                            <input type="password" class="pss" name="pss">
-                            <button class="btn" type="submit" style="margin:10% !important;" name="formulair">envoyer</button><br>
-                            <a href="">crée un compte</a>
-                        </form>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-                
-            </container>
-            </p>
-    </header>
+<body class="flex items-center justify-center min-h-screen m-0">
+
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+
+    <h3 class="text-center text-blue-900 font-extrabold text-2xl mb-6">Connexion</h3>
+
+    <!-- Messages d'erreur -->
+    <?php if (isset($_GET['error'])) : ?>
+      <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4 text-center text-base font-medium">
+        Votre information est incomplète.
+      </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['faux'])) : ?>
+      <div class="bg-yellow-100 text-yellow-800 px-4 py-3 rounded mb-4 text-center text-base font-medium">
+        Votre information est incorrecte.
+      </div>
+    <?php endif; ?>
+
+    <!-- Formulaire -->
+    <form action="confirmation.php" method="POST" class="space-y-5">
+
+      <div>
+        <label for="compte" class="block mb-2 text-gray-700 font-semibold">Compte</label>
+        <input type="text" id="compte" name="compte" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-gray-50" />
+      </div>
+
+      <div>
+        <label for="pss" class="block mb-2 text-gray-700 font-semibold">Mot de passe</label>
+        <input type="password" id="pss" name="pss" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-gray-50" />
+      </div>
+
+      <button type="submit" name="formulair"
+        class="w-full bg-blue-900 text-white font-semibold py-3 rounded-md hover:bg-blue-800 transition">
+        Envoyer
+      </button>
+
+      <div class="text-center">
+        <a href="#" class="text-blue-900 font-medium hover:underline">Créer un compte</a>
+      </div>
+
+    </form>
+  </div>
+
 </body>
 </html>

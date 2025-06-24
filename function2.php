@@ -1,20 +1,21 @@
 <?php 
 require('bdn.php');
-$nom_pro = $_POST['nom_pro'];
-$nom_reg = $_POST['nom_reg'];
-$nom = $_POST['nom'];
-$prenom = $_POST['prenom'];
-$telephone = $_POST['telephone'];
-$btn = $_POST['Enregistre'];
-$id = $_POST['id'];
-$delete = $_GET['nom'];
-$delete2 = $_GET['delete2'];
-$update2 = $_POST['update2'];
-$delete2 = $_GET['delete4'];
-$delete3 = $_GET['delete3'];
+$nom_pro = $_POST['nom_pro'] ?? null;
+$nom_reg = $_POST['nom_reg'] ?? null;
+$nom = $_POST['nom'] ?? null;
+$prenom = $_POST['prenom'] ?? null;
+$telephone = $_POST['telephone'] ?? null;
+$btn = $_POST['Enregistre'] ?? null;
+$id = $_POST['id'] ?? null;
+$delete = $_GET['nom'] ?? null;
+$delete2 = $_GET['delete2'] ?? null;
+$update2 = $_POST['update2'] ?? null;
+$delete2 = $_GET['delete4'] ?? null;
+$delete3 = $_GET['delete3'] ?? null;
+
 $btn2 = $_POST['Enregistre2'];
 
-echo $nom_pro .' '. $nom .' '. $prenom .' '. $telephone .' '. $id; 
+// echo $nom_pro .' '. $nom .' '. $prenom .' '. $telephone .' '. $id; 
 
 function update($nom_pro,$btn,$nom,$prenom,$telephone,$id,$update2,$update3,$btn2){
     global $connexion;
@@ -70,6 +71,7 @@ function inser(){
         }
     }
 function delete($delete,$delete2,$delete3,$delete4){
+    
     global $connexion;
     if($delete){
         $supprimer = $connexion->prepare("DELETE FROM province WHERE nom_pro = :nom_pro");
@@ -83,16 +85,15 @@ function delete($delete,$delete2,$delete3,$delete4){
         echo "<script>document.location='Region.php'</script>";
         return($supprimer1);  
     }
-    if($delete3){
-        $supprimer2 = $connexion->prepare("DELETE FROM commune WHERE id = :nom_pro");
-        $supprimer2->execute([":nom_pro"=> $delete3,]);
+    if ($delete3) {
+        $supprimer = $connexion->prepare("DELETE FROM commune WHERE id = :id");
+        $supprimer->execute([":id" => $delete3]);
         echo "<script>document.location='commune.php'</script>";
-        return($supprimer2);
     }else{
         echo "tsy mety";
     }
 }
-update($nom_pro,$btn,$nom,$prenom,$telephone,$id,$update2,$update3);
+update($nom_pro, $btn, $nom, $prenom, $telephone, $id, $update2, $update3, $nom_reg, $nom_comm);
 delete($delete,$delete2,$delete3,$delete4);
 
 

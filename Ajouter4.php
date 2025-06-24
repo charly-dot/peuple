@@ -1,79 +1,142 @@
 <?php
 require('bdn.php');
 require('function.php');
-$detail3 = fokotany($verification);
-$detail = province();
-$detail1 = region3();
-$detail2 = commune();
-if($_GET['num3']){
-    $verification = $_GET['num3'];
-    $detail3 = fokotany($verification);
+if(isset($_GET['num3'])){
+    $affichage_fkt = $connexion->prepare("SELECT * FROM maison WHERE id = :x");
+    $affichage_fkt->execute([
+        "x" => $_GET['num3'],
+    ]);
+    $tous = $affichage_fkt->fetchAll();
+    // var_dump($tous);
+}
+
+if(isset($_GET['ajouter'])){
+    $affichage_fkt = $connexion->prepare("SELECT * FROM fokotany WHERE nom_fkt = :x");
+    $affichage_fkt->execute([
+        "x" => $_GET['ajouter'],
+    ]);
+    $tous = $affichage_fkt->fetchAll();
+    // var_dump($tous);
 }
 ?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
- 
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Region</title>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="tout.css">
+    <meta charset="UTF-8">
+    <title>Ajouter ou modifier une adresse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="bootstrap/css/font-awesome.min.css">
 </head>
-<body>
-	
-	<div class="container voalohany">
-		<div class="row">
-			<form action="update.php" method="post">
-				<div style="margin-left:20%;">
-				<?php if(isset($verification)){?>
-					<h1>modifier d'un address</h1>
-                            <label for="adress" id="adress">address :</label><input type="text" id="adress" name="adress" value="<?= $detail['nom_pro']?>"><br>
-                            <label for="nom">Nom:</label><input type="text" name="nom" id="nom" value="<?= $detail3['nom_pro']?>"><br>
-                            <label for="prenom">Prenom:</label><input type="text" name="prenom" id="prenom" value="<?= $detail3['nom_pro']?>"><br>
-                            <label for="telephone">Telephone:</label><input type="text" id="telephone" name="telephone" value="<?= $detail3['nom_pro']?>"><br></p>
-                        <button class="btn btn-info" type="submit" name="upd">Enregistre</button><button class="btn btn-danger"><a href="address.php">Sortie</a></button></div>
-                    
-					<div class="col-md-2"></div>
-				<?php }else{?>
-					<h1>ajouter d'un address</h1>
-                            <p><label for="nom_province">Votre province:</label> 
-                            <select name="nom_pro" id="province">								
-                                <?php foreach($detail as $detail): ?>
-                                    <option value="<?= $detail['nom_pro']?>"><?= $detail['nom_pro']?><br></option>
-                                <?php endforeach; ?>								
-                            </select>
-                            <label for="nom_reg">Votre region:</label> <select name="nom_reg" id="nom_reg">								
-                                <?php foreach($detail1 as $detail): ?>
-                                    <option value="<?= $detail['nom_reg']?>"><?= $detail['nom_reg']?><br></option>
-                                <?php endforeach; ?>								
-                            </select><br>
-                            <label for="nom_comm">Votre commun:</label> <select name="nom_comm" id="nom_comm">								
-                                <?php foreach($detail2 as $detail): ?>
-                                    <option value="<?= $detail['id']?>"><?= $detail['nom_comm']?><br></option>
-                                <?php endforeach; ?>								
-                            </select>
-                            <label for="nom_fkt">Votre fokotany:</label> <select name="nom_fkt" id="nom_fkt">								
-                                <?php foreach($detail3 as $detail): ?>
-                                    <option value="<?= $detail['id']?>"><?= $detail['nom_fkt']?><br></option>
-                                <?php endforeach; ?>								
-                            </select><br>
-                            <label for="adress" id="adress">address :</label><input type="text" id="adress" name="adress"><br>
-                            <label for="nom">Nom:</label><input type="text" name="nom" id="nom"><br>
-                            <label for="prenom">Prenom:</label><input type="text" name="prenom" id="prenom"><br>
-                            <label for="telephone">Telephone:</label><input type="text" id="telephone" name="telephone"><br></p>
-                        <button class="btn btn-info" type="submit" name="ins4">Enregistre</button><button class="btn btn-danger"><a href="address.php">Sortie</a></button></div>
-                    </div>
-				<div class="col-md-2"></div>
-				<?php }; ?>
-					
-			</form>
-		</div>
-	</div>
+<body class="bg-gray-100 font-sans">
+
+<!-- Navbar -->
+<nav class="bg-blue-900 text-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <span class="text-lg font-bold">Adresse</span>
+        <ul class="hidden md:flex space-x-6 text-sm font-semibold">
+            <li><a href="Acceuil.php" class="hover:underline">Province</a></li>
+            <li><a href="Region.php" class="hover:underline">Région</a></li>
+            <li><a href="commune.php" class="hover:underline">Commune</a></li>
+            <li><a href="Fokotany.php" class="hover:underline">Fokotany</a></li>
+        </ul>
+        <a href="index2.php" class="border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-blue-900 transition text-sm font-semibold">
+            Déconnexion
+        </a>
+    </div>
+</nav>
+
+<!-- Conteneur -->
+<main class="max-w-xl mx-auto bg-white shadow-md rounded-lg p-8 mt-10">
+
+    <form action="update.php" method="POST" class="space-y-4">
+
+        <?php if (isset($_GET['num3'])): ?>
+            <h2 class="text-xl font-bold text-blue-900 mb-6">Modifier une adresse</h2>
+            <?php foreach ($tous as $detail3): ?>
+                <input type="hidden" name="id" value="<?= $detail3['id'] ?>">
+
+                <div>
+                    <label for="adress" class="block text-sm font-semibold text-gray-700">Adresse :</label>
+                    <input type="text" id="adress" name="adress" value="<?= $detail3['adress'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                    <label for="nom" class="block text-sm font-semibold text-gray-700">Nom :</label>
+                    <input type="text" id="nom" name="nom" value="<?= $detail3['nom'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                    <label for="prenom" class="block text-sm font-semibold text-gray-700">Prénom :</label>
+                    <input type="text" id="prenom" name="prenom" value="<?= $detail3['prenom'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div>
+                    <label for="telephone" class="block text-sm font-semibold text-gray-700">Téléphone :</label>
+                    <input type="tel" id="telephone" name="telephone" value="<?= $detail3['telephone'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                </div>
+
+                <div class="flex justify-between pt-4">
+                    <button type="submit" name="updmaison" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition">
+                        💾 Enregistrer
+                    </button>
+                    <a href="Fokotany.php" class="bg-red-600 text-white px-5 py-2 rounded-full hover:bg-red-700 transition">
+                        ❌ Annuler
+                    </a>
+                </div>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <h2 class="text-xl font-bold text-blue-900 mb-6">➕ Ajouter une adresse</h2>
+
+            <!-- Select Province -->
+            <?php foreach($tous as $detail): ?>
+                <input type="hidden" id="prenom" name="nom_pro" value="<?= $detail['nom_pro'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                <input type="hidden" id="prenom" name="nom_reg" value="<?= $detail['nom_reg'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                <input type="text" id="prenom" name="nom_comm" value="<?= $detail['nom_comm'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+                <input type="hidden" id="prenom" name="nom_fkt" value="<?= $detail['nom_fkt'] ?>" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+            <?php endforeach; ?>
+
+           
+
+            <!-- Adresse -->
+            <div>
+                <label for="adress" class="block text-sm font-semibold text-gray-700">Adresse :</label>
+                <input type="text" id="adress" name="adress" placeholder="Adresse complète" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- Nom -->
+            <div>
+                <label for="nom" class="block text-sm font-semibold text-gray-700">Nom :</label>
+                <input type="text" id="nom" name="nom" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- Prénom -->
+            <div>
+                <label for="prenom" class="block text-sm font-semibold text-gray-700">Prénom :</label>
+                <input type="text" id="prenom" name="prenom" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- Téléphone -->
+            <div>
+                <label for="telephone" class="block text-sm font-semibold text-gray-700">Téléphone :</label>
+                <input type="tel" id="telephone" name="telephone" placeholder="034xxxxxxx"  required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <div class="flex justify-between pt-4">
+                <button type="submit" name="ist4" class="bg-blue-900 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition">
+                    💾 Enregistrer
+                </button>
+                <a href="Fokotany.php" class="bg-red-600 text-white px-5 py-2 rounded-full hover:bg-red-700 transition">
+                    ❌ Annuler
+                </a>
+            </div>
+
+        <?php endif; ?>
+
+    </form>
+</main>
+
 </body>
 </html>

@@ -16,7 +16,7 @@ if (isset($_POST['Enregistre'])){
         $insertion->bindValue(':prenom', $_POST['prenom'], PDO::PARAM_STR);
         $insertion->bindValue(':telephone', $_POST['telephone'], PDO::PARAM_INT);
         $insertion->execute();
-        echo "<script>document.location='Accueil.php'</script>";
+        echo "<script>document.location='Acceuil.php'</script>";
     }}
 function region($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro){
     global $connexion;
@@ -28,9 +28,8 @@ function region($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro){
             $update->bindValue(':prenom',  $prenom, PDO::PARAM_STR);
             $update->bindValue(':telephone',  $telephone, PDO::PARAM_INT);
             $update->bindValue(':nom_pro',  $nom_pro, PDO::PARAM_INT);
-            echo "<script>document.location='Region.php'</script>";
+            header("location: Region.php?ajoute");
             $update->execute();
-            echo "mety";
             return($update);
        }
     }
@@ -44,9 +43,9 @@ function region($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro){
         $update->bindValue(':prenom',  $prenom, PDO::PARAM_STR);
         $update->bindValue(':telephone',  $telephone, PDO::PARAM_INT);
         $update->bindValue(':nom_pro',  $nom_pro, PDO::PARAM_INT);
-         // echo "<script>document.location='commune.php'</script>";
+         echo "<script>document.location='commune.php'</script>";
         $update->execute();
-        echo "mety";
+        // echo "mety";
         return($update);
    }
 } 
@@ -60,34 +59,32 @@ function region($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro){
     function commune1($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro,$nom_comm,$ins2){
         global $connexion;
         if (!empty($nom_pro) AND !empty($nom_reg) AND !empty($nom) AND !empty($telephone) AND !empty($nom_comm) AND !empty($prenom)){
-             $update = $connexion->prepare("INSERT INTO commune(nom_comm,nom,prenom,telephone,nom_reg,nom_pro)VALUES(:nom_comm, :nom, :prenom, :telephone, :nom_reg, :nom_pro)");
+             $update = $connexion->prepare("INSERT INTO commune(nom_cum,nom,prenom,telephone,nom_reg,nom_pro)VALUES(:nom_comm, :nom, :prenom, :telephone, :nom_reg, :nom_pro)");
              $update->bindValue(':nom_reg',  $nom_reg, PDO::PARAM_STR);
              $update->bindValue(':nom_comm',  $nom_comm, PDO::PARAM_STR);
              $update->bindValue(':nom',  $nom, PDO::PARAM_STR);
              $update->bindValue(':prenom',  $prenom, PDO::PARAM_STR);
              $update->bindValue(':telephone',  $telephone, PDO::PARAM_INT);
              $update->bindValue(':nom_pro',  $nom_pro, PDO::PARAM_INT);
-             echo "<script>document.location='commune.php'</script>";
              $update->execute();
-             echo "mety";
+             header("location: commune.php?ajoute");
              return($update);
          }
     }
-    function insert3($nom,$prenom,$telephone,$id,$nom_reg,$nom_fkt,$nom_pro,$nom_comm,$ins3){
+    function insert3($nom,$prenom,$telephone,$id,$nom_reg,$nom_fkt,$nom_pro,$nom_cum,$ins3){
         global $connexion;
-        if (!empty($_POST['nom_comm']) AND !empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['telephone']) AND !empty($_POST['nom_reg']) AND !empty($_POST['nom_pro']) AND !empty($_POST['nom_fkt'])){
-            $insertion = $connexion->prepare('INSERT INTO fokotany(nom_fkt,nom,prenom,telephone,nom_pro,nom_reg,nom_comm)VALUES(:nom_fkt, :nom, :prenom, :telephone, :nom_pro, :nom_reg, :nom_comm)');
-            $insertion->bindValue(':nom_comm', $nom_comm, PDO::PARAM_STR);
+             $insertion = $connexion->prepare('INSERT INTO fokotany(nom_fkt,nom,prenom,telephone,nom_pro,nom_reg,nom_comm)VALUES(:nom_fkt, :nom, :prenom, :telephone, :nom_pro, :nom_reg, :nom_comm)');
+            $insertion->bindValue(':nom_comm', $nom_cum, PDO::PARAM_STR);
             $insertion->bindValue(':nom', $nom, PDO::PARAM_STR);
             $insertion->bindValue(':prenom', $prenom, PDO::PARAM_STR);
             $insertion->bindValue(':telephone', $telephone, PDO::PARAM_INT);
             $insertion->bindValue(':nom_reg', $nom_reg, PDO::PARAM_STR);
             $insertion->bindValue(':nom_pro', $nom_pro, PDO::PARAM_STR);
             $insertion->bindValue(':nom_fkt', $nom_fkt, PDO::PARAM_STR);
-            echo "<script>document.location='Fokotany.php'</script>";
+            
+             header("location: Fokotany.php?ajoute");
             $insertion->execute();
             return($insertion);
-        }
     }
     if(isset($_POST['ins4'])){
         $update = $connexion->prepare('INSERT INTO maison(adress,nom,prenom,telephone,nom_pro,nom_reg,nom_comm,nom_fkt)VALUES(:adress, :nom, :prenom,  :telephone, :nom_pro, :nom_reg, :nom_comm, :nom_fkt)');
@@ -100,6 +97,7 @@ function region($nom,$prenom,$telephone,$id,$nom_reg,$ins1,$nom_pro){
         $update->bindValue(':nom',  $_POST['nom'], PDO::PARAM_STR);
         $update->bindValue(':prenom',  $_POST['prenom'], PDO::PARAM_STR);
         $update->execute();
-        echo "<script> document.location='Fokotany.php'</script>";
+        header("location: Fokotany.php?ajoute");
+        
     }
 ?>
